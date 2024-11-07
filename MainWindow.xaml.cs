@@ -11,39 +11,37 @@ namespace CoordinateDescentMethod
     {
         private static readonly double PHI = (1 + Math.Sqrt(5)) / 2;
 
-        public static (double, double, double) CoordinateDescentMethod(string functionExpression, double parametrA, double parametrB, double epsilon, bool isMinimumSearched)
+        public static (double, double) CoordinateDescentMethod(string functionExpression, double parametrA, double parametrB, double epsilon, bool isMinimumSearched)
         {
             double middlePoint = (parametrA + parametrB) / 2;
             double pointX, pointY, pointZ;
             double nextPointX = middlePoint;
             double nextPointY = middlePoint;
-            double nextPointZ = middlePoint;
 
             do
             {
                 pointX = nextPointX;
                 pointY = nextPointY;
-                pointZ = nextPointZ;
 
                 string functionExpressionAccordingX = functionExpression.Replace("y", pointY.ToString());
-                functionExpressionAccordingX = functionExpressionAccordingX.Replace("z", pointZ.ToString());
+                //functionExpressionAccordingX = functionExpressionAccordingX.Replace("z", pointZ.ToString());
                 Function expressionAccordingX = ConvertExpressionToFunctionFromString(functionExpressionAccordingX.Replace(",", "."));
                 nextPointX = FindExtremumByGoldenSection(expressionAccordingX, parametrA, parametrB, epsilon);
 
                 string functionExpressionAccordingY = functionExpression.Replace("x", pointX.ToString());
-                functionExpressionAccordingY = functionExpressionAccordingY.Replace("z", pointZ.ToString());
+                //functionExpressionAccordingY = functionExpressionAccordingY.Replace("z", pointZ.ToString());
                 functionExpressionAccordingY = functionExpressionAccordingY.Replace("y", "x");
                 Function expressionAccordingY = ConvertExpressionToFunctionFromString(functionExpressionAccordingY.Replace(",", "."));
                 nextPointY = FindExtremumByGoldenSection(expressionAccordingY, parametrA, parametrB, epsilon);
 
-                string functionExpressionAccordingZ = functionExpression.Replace("x", pointX.ToString());
-                functionExpressionAccordingZ = functionExpressionAccordingZ.Replace("y", pointY.ToString());
-                functionExpressionAccordingZ = functionExpressionAccordingZ.Replace("z", "x");
-                Function expressionAccordingZ = ConvertExpressionToFunctionFromString(functionExpressionAccordingZ.Replace(",", "."));
-                nextPointZ = FindExtremumByGoldenSection(expressionAccordingZ, parametrA, parametrB, epsilon);
-            } while (Math.Abs(nextPointX - pointX) > epsilon || Math.Abs(nextPointY - pointY) > epsilon || Math.Abs(nextPointZ - pointZ) > epsilon);
+                //string functionExpressionAccordingZ = functionExpression.Replace("x", pointX.ToString());
+                //functionExpressionAccordingZ = functionExpressionAccordingZ.Replace("y", pointY.ToString());
+                //functionExpressionAccordingZ = functionExpressionAccordingZ.Replace("z", "x");
+                //Function expressionAccordingZ = ConvertExpressionToFunctionFromString(functionExpressionAccordingZ.Replace(",", "."));
+                //nextPointZ = FindExtremumByGoldenSection(expressionAccordingZ, parametrA, parametrB, epsilon);
+            } while (Math.Abs(nextPointX - pointX) > epsilon || Math.Abs(nextPointY - pointY) > epsilon);
 
-            return (nextPointX, nextPointY, nextPointZ);
+            return (nextPointX, nextPointY);
         }
 
         //  Поиск точки минимума методом золотого сечения 
@@ -151,9 +149,9 @@ namespace CoordinateDescentMethod
 
         private void FindLocalExtremum()
         {
-            (double, double, double) localMinimum = FunctionModel.CoordinateDescentMethod(FunctionExpression, ParametrA, ParametrB, Epsilon, true);
-            (double, double, double) localMaximum = FunctionModel.CoordinateDescentMethod(FunctionExpression, ParametrA, ParametrB, Epsilon, false);
-            ResultText = $"Результат:\nМинимум: x = {Math.Round(localMinimum.Item1, 2, MidpointRounding.AwayFromZero)}, y = {Math.Round(localMinimum.Item2, 2, MidpointRounding.AwayFromZero)}, z = {Math.Round(localMinimum.Item3, 2, MidpointRounding.AwayFromZero)}";
+            (double, double) localMinimum = FunctionModel.CoordinateDescentMethod(FunctionExpression, ParametrA, ParametrB, Epsilon, true);
+            (double, double) localMaximum = FunctionModel.CoordinateDescentMethod(FunctionExpression, ParametrA, ParametrB, Epsilon, false);
+            ResultText = $"Результат:\nМинимум: x = {Math.Round(localMinimum.Item1, 2, MidpointRounding.AwayFromZero)}, y = {Math.Round(localMinimum.Item2, 2, MidpointRounding.AwayFromZero)}";
                          // $"Максимум: x = {Math.Round(localMaximum.Item1, 2, MidpointRounding.AwayFromZero)}, y = {Math.Round(localMaximum.Item2, 2, MidpointRounding.AwayFromZero)}, z = {Math.Round(localMaximum.Item3, 2, MidpointRounding.AwayFromZero)}";
         }
     }
